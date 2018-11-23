@@ -20,7 +20,11 @@ export const build = async (args: Config) => {
   const run = Plugin.runPluginsMethod(config.plugins)
   const dataServer = new DataServer()
 
-  dataServer.register([states.config(config), states.entries(entries, config)])
+  dataServer.register([
+    states.config(config),
+    states.entries(entries, config),
+    states.metadata(entries, config),
+  ])
 
   try {
     await promiseLogger(Entries.writeApp(config, true), 'Parsing mdx files')
