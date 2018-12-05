@@ -8,7 +8,7 @@ export interface LocalStorage {
   remove(key: string): void
 }
 
-export const localStorage = (): LocalStorage => ({
+const localStorage = (): LocalStorage => ({
   get: (key: string) => {
     checkWindow()
     return window.localStorage.getItem(key)
@@ -22,3 +22,13 @@ export const localStorage = (): LocalStorage => ({
     window.localStorage.removeItem(key)
   },
 })
+
+const storage = localStorage()
+export const useLocalStorage = () => {
+  const get = (pos: number): any => storage.get(pos.toString())
+  const remove = (pos: number): void => storage.remove(pos.toString())
+  const set = (pos: number, size: string): void =>
+    storage.set(pos.toString(), size)
+
+  return { get, remove, set }
+}
