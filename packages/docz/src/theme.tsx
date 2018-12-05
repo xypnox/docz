@@ -5,8 +5,7 @@ import { StaticRouterProps } from 'react-router'
 
 import { state, ThemeConfig, TransformFn } from './state'
 import { ErrorBoundary } from './components/ErrorBoundary'
-import { DataServer } from './components/DataServer'
-import { ScrollToTop } from './utils/ScrollToTop'
+import { setupDataServer } from './utils/setupDataServer'
 
 // tslint:disable-next-line
 import db from '~db'
@@ -37,7 +36,15 @@ export function theme(
 ): ThemeReturn {
   return WrappedComponent => {
     const Theme: SFC<ThemeProps> = props => {
+      setupDataServer(DOCZ_WEBSOCKET_URL)
+
       const { wrapper: Wrapper } = props
+      const Router = (props: any) =>
+        Boolean(DOCZ_HASH_ROUTER) ? (
+          <HashRouter {...props} />
+        ) : (
+          <BrowserRouter {...props} />
+        )
 
       const wrapped = Wrapper ? (
         <Wrapper>
@@ -50,11 +57,7 @@ export function theme(
       return (
         <ErrorBoundary>
           <state.Provider initial={{ ...db, themeConfig, transform }}>
-            <DataServer websocketUrl={DOCZ_WEBSOCKET_URL}>
-              <Router basename={DOCZ_BASE_URL}>
-                <ScrollToTop>{wrapped}</ScrollToTop>
-              </Router>
-            </DataServer>
+            <Router basename={DOCZ_BASE_URL}>{wrapped}</Router>
           </state.Provider>
         </ErrorBoundary>
       )

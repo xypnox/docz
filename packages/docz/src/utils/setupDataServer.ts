@@ -1,17 +1,10 @@
-import { Children, SFC, useEffect } from 'react'
+import { useEffect } from 'react'
 import { state } from '../state'
 
-export interface DataServerProps {
-  websocketUrl?: string
-}
-
-export const DataServer: SFC<DataServerProps> = ({
-  children,
-  websocketUrl,
-}) => {
+export const setupDataServer = (url: string | undefined) => {
   useEffect(() => {
-    if (websocketUrl) {
-      const socket = new WebSocket(websocketUrl)
+    if (url) {
+      const socket = new WebSocket(url)
       socket.onmessage = (ev: any) => {
         const { type, payload } = JSON.parse(ev.data)
         const prop = type.startsWith('state.') && type.split('.')[1]
@@ -22,6 +15,4 @@ export const DataServer: SFC<DataServerProps> = ({
       }
     }
   }, [])
-
-  return Children.only(children)
 }
