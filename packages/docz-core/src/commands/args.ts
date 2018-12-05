@@ -71,11 +71,6 @@ export interface Argv {
   title: string
   description: string
   theme: string
-  /**
-   * @deprecated since the new ordering using menu on config file
-   * this property will be deleted in the v1.0
-   */
-  ordering: 'ascending' | 'descending'
   hashRouter: boolean
   wrapper?: string
   indexHtml?: string
@@ -161,10 +156,6 @@ export const args = (env: Env) => (yargs: any) => {
   yargs.positional('indexHtml', {
     type: 'string',
     default: getEnv('docz.index.html', null),
-  })
-  yargs.positional('ordering', {
-    type: 'string',
-    default: getEnv('docz.ordering', 'descending'),
   })
   yargs.positional('debug', {
     type: 'boolean',

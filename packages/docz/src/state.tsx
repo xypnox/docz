@@ -13,7 +13,6 @@ export interface Entry {
   slug: string
   route: string
   name: string
-  order: number
   menu: string | null
   headings: Heading[]
   [key: string]: any
@@ -29,13 +28,11 @@ export interface MenuItem {
   route?: string
   href?: string
   menu?: MenuItem[]
-  order?: number
 }
 
 export interface Config {
   title: string
   description: string
-  ordering: string
   themeConfig: ThemeConfig
   menu: MenuItem[]
   version: string | null
