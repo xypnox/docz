@@ -1,9 +1,9 @@
 import * as React from 'react'
 import { SFC } from 'react'
 import { withMDXComponents } from '@mdx-js/tag/dist/mdx-provider'
-import importedComponent from 'react-imported-component'
+import imported from 'react-imported-component'
 
-import { EntryMap } from '../state'
+import { Entry } from '../state'
 import { ComponentsMap } from './DocPreview'
 import { AsyncComponent } from './AsyncComponent'
 
@@ -22,28 +22,25 @@ export async function loadFromImports(path: string): Promise<SFC<any>> {
   return withMDXComponents(ExportedComponent)
 }
 
-export const loadRoute: any = (path: string, LoadingComponent: any) => {
-  const opts: any = { LoadingComponent }
-  return importedComponent(async () => loadFromImports(path), opts)
-}
+export const loadRoute: any = (path: string, LoadingComponent: any) =>
+  imported(async () => loadFromImports(path), {
+    async: true,
+    LoadingComponent,
+  })
 
-interface AsyncRouteProps {
-  asyncComponent: any
+interface DocRouteProps {
+  component: any
   components: ComponentsMap
-  path: string
-  entries: EntryMap
+  entry: Entry
 }
 
-export const AsyncRoute: SFC<AsyncRouteProps> = ({
+export const DocRoute: SFC<DocRouteProps> = ({
+  entry,
   components,
-  asyncComponent,
-  path,
-  entries,
+  component: Component,
   ...routeProps
 }) => {
   const Page: any = components.page
-  const Component: any = asyncComponent
-  const entry = entries && entries[path]
   const props = { ...routeProps, doc: entry }
 
   return Page ? (
