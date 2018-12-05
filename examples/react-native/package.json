@@ -8,9 +8,9 @@
   },
   "dependencies": {
     "prop-types": "^15.6.2",
-    "react": "^16.6.3",
-    "react-art": "^16.6.3",
-    "react-dom": "^16.6.3",
+    "react": "^16.7.0-alpha.2",
+    "react-art": "^16.7.0-alpha.2",
+    "react-dom": "^16.7.0-alpha.2",
     "react-native-web": "^0.9.9",
     "styled-components": "^4.1.3"
   },
