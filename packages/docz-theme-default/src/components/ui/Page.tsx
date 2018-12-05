@@ -1,6 +1,6 @@
 import { jsx } from '@emotion/core'
 import { SFC, Fragment } from 'react'
-import { PageProps, ThemeConfig } from 'docz'
+import { useConfig, PageProps } from 'docz'
 import lighten from 'polished/lib/color/lighten'
 import Edit from 'react-feather/dist/icons/edit-2'
 import styled from '@emotion/styled'
@@ -57,9 +57,10 @@ const EditIcon = styled(Edit)<{ width: number }>`
 `
 
 export const Page: SFC<PageProps> = ({
-  children,
   doc: { link, fullpage, edit = true },
+  children,
 }) => {
+  const { repository, ...config } = useConfig()
   const content = (
     <Fragment>
       {link && edit && (
@@ -72,16 +73,10 @@ export const Page: SFC<PageProps> = ({
   )
 
   return (
-    <ThemeConfig>
-      {({ repository, ...config }) => (
-        <Main config={config}>
-          {repository && <GithubLink repository={repository} />}
-          {!fullpage && <Sidebar />}
-          <Wrapper>
-            {fullpage ? content : <Container>{content}</Container>}
-          </Wrapper>
-        </Main>
-      )}
-    </ThemeConfig>
+    <Main config={config}>
+      {repository && <GithubLink repository={repository} />}
+      {!fullpage && <Sidebar />}
+      <Wrapper>{fullpage ? content : <Container>{content}</Container>}</Wrapper>
+    </Main>
   )
 }

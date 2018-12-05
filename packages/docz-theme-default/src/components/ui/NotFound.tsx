@@ -1,4 +1,4 @@
-import { ThemeConfig } from 'docz'
+import { useConfig } from 'docz'
 import { jsx } from '@emotion/core'
 import styled from '@emotion/styled'
 
@@ -28,18 +28,17 @@ const Subtitle = styled('p')`
   font-size: 18px;
 `
 
-export const NotFound = () => (
-  <ThemeConfig>
-    {config => (
-      <Main config={config}>
-        <Sidebar />
-        <Wrapper>
-          <Title>Page Not Found</Title>
-          <Subtitle>
-            Check if you haven't changed the document route or deleted it!
-          </Subtitle>
-        </Wrapper>
-      </Main>
-    )}
-  </ThemeConfig>
-)
+export const NotFound = () => {
+  const config = useConfig()
+  return (
+    <Main config={config}>
+      <Sidebar />
+      <Wrapper>
+        <Title>Page Not Found</Title>
+        <Subtitle>
+          Check if you haven't changed the document route or deleted it!
+        </Subtitle>
+      </Wrapper>
+    </Main>
+  )
+}

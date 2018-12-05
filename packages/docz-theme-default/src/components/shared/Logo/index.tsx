@@ -1,6 +1,6 @@
 import { jsx } from '@emotion/core'
 import { SFC } from 'react'
-import { ThemeConfig, Link } from 'docz'
+import { Link, useConfig } from 'docz'
 import styled from '@emotion/styled'
 
 import { breakpoints } from '@styles/responsive'
@@ -62,18 +62,21 @@ interface LogoProps {
   showBg: boolean
 }
 
-export const Logo: SFC<LogoProps> = ({ showBg }) => (
-  <ThemeConfig>
-    {({ title, themeConfig: { logo } }) => (
-      <Wrapper showBg={showBg}>
-        <Link to="/">
-          {logo ? (
-            <LogoImg src={logo.src} width={logo.width} alt={title} />
-          ) : (
-            <LogoText>{title}</LogoText>
-          )}
-        </Link>
-      </Wrapper>
-    )}
-  </ThemeConfig>
-)
+export const Logo: SFC<LogoProps> = ({ showBg }) => {
+  const {
+    title,
+    themeConfig: { logo },
+  } = useConfig()
+
+  return (
+    <Wrapper showBg={showBg}>
+      <Link to="/">
+        {logo ? (
+          <LogoImg src={logo.src} width={logo.width} alt={title} />
+        ) : (
+          <LogoText>{title}</LogoText>
+        )}
+      </Link>
+    </Wrapper>
+  )
+}

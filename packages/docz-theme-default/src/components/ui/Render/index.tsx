@@ -1,5 +1,5 @@
 import { SFC, Fragment, Component } from 'react'
-import { RenderComponentProps, ThemeConfig } from 'docz'
+import { RenderComponentProps, useConfig } from 'docz'
 import { LiveProvider, LiveError, LivePreview } from 'react-live'
 import { css, jsx } from '@emotion/core'
 import styled from '@emotion/styled'
@@ -143,6 +143,7 @@ const parse = (position: number, key: string, defaultValue: any) => {
 }
 
 export interface RenderProps extends RenderComponentProps {
+  config?: any
   showEditor?: boolean
 }
 
@@ -183,27 +184,22 @@ class RenderBase extends Component<RenderProps, RenderState> {
 
   get actions(): JSX.Element {
     const { fullscreen, showEditor } = this.state
-    const { codesandbox } = this.props
+    const { codesandbox, config } = this.props
 
     return (
       <Actions withRadius={this.state.showEditor}>
         <Action onClick={this.handleRefresh} title="Refresh playground">
           <Refresh width={15} />
         </Action>
-        <ThemeConfig>
-          {config =>
-            config.codeSandbox &&
-            codesandbox !== 'undefined' && (
-              <ActionLink
-                href={this.codesandboxUrl(config.native)}
-                target="_blank"
-                title="Open in CodeSandbox"
-              >
-                <CodeSandboxLogo style={{ height: '100%' }} width={15} />
-              </ActionLink>
-            )
-          }
-        </ThemeConfig>
+        {config.codeSandbox && codesandbox !== 'undefined' && (
+          <ActionLink
+            href={this.codesandboxUrl(config.native)}
+            target="_blank"
+            title="Open in CodeSandbox"
+          >
+            <CodeSandboxLogo style={{ height: '100%' }} width={15} />
+          </ActionLink>
+        )}
         <Clipboard content={this.state.code} />
         <Action
           onClick={this.handleToggle}
@@ -367,13 +363,13 @@ class RenderBase extends Component<RenderProps, RenderState> {
   }
 }
 
-export const Render: SFC<RenderProps> = props => (
-  <ThemeConfig>
-    {config => (
-      <RenderBase
-        {...props}
-        showEditor={getter(config, 'themeConfig.showPlaygroundEditor')}
-      />
-    )}
-  </ThemeConfig>
-)
+export const Render: SFC<RenderProps> = props => {
+  const config = useConfig()
+  return (
+    <RenderBase
+      {...props}
+      config={config}
+      showEditor={getter(config, 'themeConfig.showPlaygroundEditor')}
+    />
+  )
+}

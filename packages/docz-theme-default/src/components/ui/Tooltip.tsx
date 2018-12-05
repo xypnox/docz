@@ -1,6 +1,6 @@
 import { SFC, ReactNode } from 'react'
-import { ThemeConfig } from 'docz'
-import { jsx, css, ClassNames } from '@emotion/core'
+import { useConfig } from 'docz'
+import { jsx, css } from '@emotion/core'
 import styled from '@emotion/styled'
 import BaseTooltip from 'rc-tooltip'
 
@@ -27,23 +27,19 @@ const Link = styled('a')`
   color: ${get('colors.primary')};
 `
 
-export const Tooltip: SFC<TooltipProps> = ({ text, children }) => (
-  <ThemeConfig>
-    {config => (
-      <ClassNames>
-        {({ css }) => (
-          <BaseTooltip
-            placement="top"
-            trigger={['hover']}
-            overlay={text}
-            overlayClassName={css(overlayStyle(config.themeConfig.colors))}
-          >
-            <Link href="#" onClick={(ev: any) => ev.preventDefault()}>
-              {children}
-            </Link>
-          </BaseTooltip>
-        )}
-      </ClassNames>
-    )}
-  </ThemeConfig>
-)
+export const Tooltip: SFC<TooltipProps> = ({ text, children }) => {
+  const { themeConfig } = useConfig()
+
+  return (
+    <BaseTooltip
+      placement="top"
+      trigger={['hover']}
+      overlay={text}
+      css={overlayStyle(themeConfig.colors)}
+    >
+      <Link href="#" onClick={(ev: any) => ev.preventDefault()}>
+        {children}
+      </Link>
+    </BaseTooltip>
+  )
+}

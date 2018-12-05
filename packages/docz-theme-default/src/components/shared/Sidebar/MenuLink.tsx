@@ -1,10 +1,11 @@
-import { Component } from 'react'
-import { Link, MenuItem, ThemeConfig } from 'docz'
+import { useEffect, useRef, useState, SFC } from 'react'
+import { Link, MenuItem, useConfig } from 'docz'
 import { css, jsx } from '@emotion/core'
 import styled from '@emotion/styled'
 
 import { MenuHeadings } from './MenuHeadings'
 import { get } from '@utils/theme'
+import { usePrevious } from '@utils/usePrevious'
 
 interface WrapperProps {
   active: boolean
@@ -75,70 +76,46 @@ interface LinkProps {
   innerRef?: (node: any) => void
 }
 
-interface LinkState {
-  active: boolean
-}
+export const MenuLink: SFC<LinkProps> = ({
+  item,
+  children,
+  onClick,
+  innerRef,
+}) => {
+  const [active, setActive] = useState(false)
+  const prevActive = usePrevious(active)
+  const config = useConfig()
+  const $el = useRef(null)
 
-export class MenuLink extends Component<LinkProps, LinkState> {
-  public $el: HTMLElement | null
-  public state: LinkState = {
-    active: false,
+  const linkProps = {
+    children,
+    onClick,
+    css: linkStyle(config.themeConfig),
   }
 
-  constructor(props: LinkProps) {
-    super(props)
-    this.$el = null
+  const refFn = (node: any) => {
+    innerRef && innerRef(node)
+    $el.current = node
   }
 
-  public componentDidUpdate(prevProps: LinkProps, prevState: LinkState): void {
-    this.updateActive(prevState.active)
-  }
+  useEffect(() => {
+    const isActive = getActiveFromClass($el.current)
+    if (prevActive !== isActive) setActive(isActive)
+  })
 
-  public componentDidMount(): void {
-    this.updateActive(this.state.active)
-  }
-
-  public render(): React.ReactNode {
-    const { active } = this.state
-    const { item, children, onClick, innerRef } = this.props
-
-    const commonProps = (config: any) => ({
-      children,
-      onClick,
-      css: linkStyle(config.themeConfig) as any,
-    })
-
-    const refFn = (node: any) => {
-      innerRef && innerRef(node)
-      this.$el = node
-    }
-
-    return (
-      <Wrapper active={active}>
-        <ThemeConfig>
-          {config => {
-            const route: any = item.route === '/' ? '/' : item.route
-            const props = { ...commonProps(config) }
-
-            return item.route ? (
-              <Link {...props} innerRef={refFn} to={route} />
-            ) : (
-              <LinkAnchor
-                {...props}
-                ref={refFn}
-                href={item.href || '#'}
-                target={item.href ? '_blank' : '_self'}
-              />
-            )
-          }}
-        </ThemeConfig>
-        {active && item.route && <MenuHeadings route={item.route} />}
-      </Wrapper>
-    )
-  }
-
-  private updateActive = (prevActive: boolean): void => {
-    const active = getActiveFromClass(this.$el)
-    if (prevActive !== active) this.setState({ active })
-  }
+  return (
+    <Wrapper active={active}>
+      {item.route ? (
+        <Link {...linkProps} innerRef={refFn} to={item.route} />
+      ) : (
+        <LinkAnchor
+          {...linkProps}
+          ref={refFn}
+          href={item.href || '#'}
+          target={item.href ? '_blank' : '_self'}
+        />
+      )}
+      {active && item.route && <MenuHeadings route={item.route} />}
+    </Wrapper>
+  )
 }

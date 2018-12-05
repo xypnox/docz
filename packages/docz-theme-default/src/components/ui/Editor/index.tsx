@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { Component } from 'react'
-import { ThemeConfig } from 'docz'
+import { useState, SFC } from 'react'
+import { useConfig } from 'docz'
 import { jsx } from '@emotion/core'
 import styled from '@emotion/styled'
 import getter from 'lodash.get'
@@ -61,86 +61,68 @@ export interface EditorProps {
   withLastLine?: boolean
 }
 
-interface EditorState {
-  code: string
-}
+export const Editor: SFC<EditorProps> = ({
+  mode,
+  children,
+  actions,
+  onChange,
+  className,
+  editorClassName,
+  withLastLine,
+  language: defaultLanguage,
+  ...props
+}) => {
+  const config = useConfig()
+  const [code, setCode] = useState(getChildren(children))
 
-export class Editor extends Component<EditorProps, EditorState> {
-  public static defaultProps = {
-    mode: 'js',
-    readOnly: true,
-    matchBrackets: true,
-    indentUnit: 2,
-  }
-
-  public state = {
-    code: getChildren(this.props.children),
-  }
-
-  public render(): React.ReactNode {
-    const { code } = this.state
-    const {
-      mode,
-      children,
-      actions,
-      onChange,
-      className,
-      editorClassName,
-      language: defaultLanguage,
-      ...props
-    } = this.props
-
-    const language = defaultLanguage || getLanguage(children)
-    const options = {
-      ...props,
-      tabSize: 2,
-      mode: language || mode,
-      lineNumbers: true,
-      lineWrapping: true,
-      autoCloseTags: true,
-      theme: 'docz-light',
-    }
-
-    const editorProps = (config: any) => ({
-      value: this.state.code,
-      className: editorClassName,
-      editorDidMount: this.onEditorDidMount,
-      onBeforeChange: this.handleChange,
-      options: {
-        ...options,
-        theme:
-          config && config.themeConfig
-            ? config.themeConfig.codemirrorTheme
-            : options.theme,
-      },
-    })
-
-    return (
-      <Wrapper className={className}>
-        <ThemeConfig>
-          {config => <CodeMirror {...editorProps(config)} />}
-        </ThemeConfig>
-        <Actions>{actions || <ClipboardAction content={code} />}</Actions>
-      </Wrapper>
-    )
-  }
-
-  private onEditorDidMount = (editor: any) => {
-    if (editor) {
-      this.removeLastLine(editor)
-      editor.refresh()
-    }
-  }
-
-  private removeLastLine = (editor: any) => {
-    if (editor && !this.props.withLastLine && this.props.readOnly) {
+  const removeLastLine = (editor: any) => {
+    if (editor && !withLastLine && props.readOnly) {
       const lastLine = editor.lastLine()
       editor.doc.replaceRange('', { line: lastLine - 1 }, { line: lastLine })
     }
   }
 
-  private handleChange = (editor: any, data: any, code: string) => {
-    this.props.onChange && this.props.onChange(code)
-    this.setState({ code })
+  const handleChange = (editor: any, data: any, code: string) => {
+    onChange && onChange(code)
+    setCode(code)
   }
+
+  const language = defaultLanguage || getLanguage(children)
+  const options = {
+    ...props,
+    tabSize: 2,
+    mode: language || mode,
+    lineNumbers: true,
+    lineWrapping: true,
+    autoCloseTags: true,
+    theme: 'docz-light',
+  }
+
+  const editorProps = (config: any) => ({
+    value: code,
+    className: editorClassName,
+    editorDidMount: removeLastLine,
+    onBeforeChange: handleChange,
+    options: {
+      ...options,
+      theme:
+        config && config.themeConfig
+          ? config.themeConfig.codemirrorTheme
+          : options.theme,
+    },
+  })
+
+  return (
+    <Wrapper className={className}>
+      <CodeMirror {...editorProps(config)} />
+      <Actions>{actions || <ClipboardAction content={code} />}</Actions>
+    </Wrapper>
+  )
+}
+
+Editor.defaultProps = {
+  mode: 'js',
+  readOnly: true,
+  matchBrackets: true,
+  indentUnit: 2,
 }

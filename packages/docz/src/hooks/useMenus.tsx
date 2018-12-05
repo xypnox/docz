@@ -1,10 +1,8 @@
-import * as React from 'react'
-import { Fragment } from 'react'
 import { pipe, get, omit } from 'lodash/fp'
 import { ulid } from 'ulid'
 import sort from 'array-sort'
 
-import { compare, isFn, flatArrFromObject, mergeArrBy } from '../utils/helpers'
+import { compare, flatArrFromObject, mergeArrBy } from '../utils/helpers'
 import { state, Entry, MenuItem } from '../state'
 
 const noMenu = (entry: Entry) => !entry.menu
@@ -101,25 +99,13 @@ const sortMenus = (first: Menus, second: Menus | undefined = []): Menus => {
   })
 }
 
-export type MenuRenderProps = Menus
-export interface DocsProps {
-  children?: (renderProps: MenuRenderProps) => React.ReactNode
-}
-
-export const Menu: React.SFC<DocsProps> = ({ children }) => {
+export const useMenus = () => {
   const { entries, config } = state.use()
-
-  if (!entries || !config || !children) return null
-  if (!isFn(children)) {
-    throw new Error(
-      'You need to pass a children as a function to your <Docs/> component'
-    )
-  }
+  if (!entries || !config) return null
 
   const arr = Object.values(entries)
   const entriesMenu = menusFromEntries(arr)
   const merged = mergeMenus(entriesMenu as MenuItem[], config.menu)
-  const menus = sortMenus(merged, config.menu)
 
-  return <Fragment>{children(menus)}</Fragment>
+  return sortMenus(merged, config.menu)
 }

@@ -1,6 +1,6 @@
 import { jsx } from '@emotion/core'
 import { SFC } from 'react'
-import { Docs, Entry, Link } from 'docz'
+import { Entry, Link, useDocs } from 'docz'
 import styled from '@emotion/styled'
 import get from 'lodash.get'
 
@@ -66,27 +66,22 @@ interface MenuHeadingsProps {
   onClick?: React.MouseEventHandler<any>
 }
 
-export const MenuHeadings: SFC<MenuHeadingsProps> = ({ route, onClick }) => (
-  <Docs>
-    {({ docs }) => {
-      const headings = getHeadings(route, docs)
+export const MenuHeadings: SFC<MenuHeadingsProps> = ({ route, onClick }) => {
+  const docs = useDocs()
+  const headings = docs && getHeadings(route, docs)
 
-      return (
-        headings.length > 0 && (
-          <Submenu>
-            {headings.map((heading: any) => (
-              <SmallLink
-                key={heading.slug}
-                onClick={onClick}
-                to={{ pathname: route, hash: heading.slug }}
-                isActive={isSmallLinkActive(heading.slug)}
-              >
-                {heading.value}
-              </SmallLink>
-            ))}
-          </Submenu>
-        )
-      )
-    }}
-  </Docs>
-)
+  return headings && headings.length > 0 ? (
+    <Submenu>
+      {headings.map((heading: any) => (
+        <SmallLink
+          key={heading.slug}
+          onClick={onClick}
+          to={{ pathname: route, hash: heading.slug }}
+          isActive={isSmallLinkActive(heading.slug)}
+        >
+          {heading.value}
+        </SmallLink>
+      ))}
+    </Submenu>
+  ) : null
+}
