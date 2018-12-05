@@ -10,16 +10,14 @@ export interface ThemeConfigProps {
 
 export const ThemeConfig: SFC<ThemeConfigProps> = ({ children }) => {
   if (typeof children !== 'function') return null
+  const { transform, config, themeConfig = {} } = state.use()
+  const newConfig = merge(themeConfig, config ? config.themeConfig : {})
 
   return (
     <Fragment>
-      {state.get(({ transform, config, themeConfig = {} }) => {
-        const newConfig = merge(themeConfig, config ? config.themeConfig : {})
-
-        return children({
-          ...config,
-          themeConfig: transform ? transform(newConfig) : newConfig,
-        })
+      {children({
+        ...config,
+        themeConfig: transform ? transform(newConfig) : newConfig,
       })}
     </Fragment>
   )

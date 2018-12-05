@@ -12,7 +12,6 @@ const fromMenu = (menu: string) => (entry: Entry) => entry.menu === menu
 const entryAsMenu = (entry: Entry) => ({
   name: entry.name,
   route: entry.route,
-  order: entry.order || 0,
 })
 
 const entriesOfMenu = (menu: string, entries: Entry[]) =>
@@ -28,7 +27,6 @@ type Menus = MenuItem[]
 const menusFromEntries = (entries: Entry[]) => {
   const entriesWithoutMenu = entries.filter(noMenu).map(entryAsMenu)
   const menus = flatArrFromObject(entries, 'menu').map(parseMenu(entries))
-
   return [...entriesWithoutMenu, ...menus]
 }
 
@@ -41,7 +39,6 @@ const normalize = (item: MenuItem | string): MenuItem => {
   return {
     ...selected,
     id: selected.id || ulid(),
-    order: selected.order || 0,
     menu: Array.isArray(selected.menu)
       ? selected.menu.map(normalize)
       : selected.menu,
@@ -80,7 +77,6 @@ const UNKNOWN_POS = Infinity
 const findPos = (item: any, orderedList: string[] = []) => {
   const name = typeof item !== 'string' ? get('name', item) : item
   const pos = orderedList.findIndex(item => item === name)
-
   return pos !== -1 ? pos : UNKNOWN_POS
 }
 
@@ -90,16 +86,8 @@ const compareWithMenu = (to: ToCompare = []) => (a: string, b: string) => {
   return compare(findPos(a, list), findPos(b, list))
 }
 
-const sortMenus = (
-  first: Menus,
-  second: Menus | undefined = [],
-  reverse: boolean
-): Menus => {
-  const sorted: Menus = sort(
-    first,
-    compareWithMenu(second),
-    (a: Entry, b: Entry) => compare(a.order, b.order, reverse)
-  )
+const sortMenus = (first: Menus, second: Menus | undefined = []): Menus => {
+  const sorted: Menus = sort(first, compareWithMenu(second))
 
   return sorted.map(item => {
     if (!item.menu) return item
@@ -108,38 +96,30 @@ const sortMenus = (
 
     return {
       ...item,
-      menu: foundMenu ? sortMenus(item.menu, foundMenu, reverse) : item.menu,
+      menu: foundMenu ? sortMenus(item.menu, foundMenu) : item.menu,
     }
   })
 }
 
 export type MenuRenderProps = Menus
-
 export interface DocsProps {
   children?: (renderProps: MenuRenderProps) => React.ReactNode
 }
 
 export const Menu: React.SFC<DocsProps> = ({ children }) => {
-  if (typeof children !== 'function') return null
+  const { entries, config } = state.use()
 
-  return (
-    <Fragment>
-      {state.get(({ entries, config }) => {
-        if (!entries || !config || !children) return null
-        if (!isFn(children)) {
-          throw new Error(
-            'You need to pass a children as a function to your <Docs/> component'
-          )
-        }
+  if (!entries || !config || !children) return null
+  if (!isFn(children)) {
+    throw new Error(
+      'You need to pass a children as a function to your <Docs/> component'
+    )
+  }
 
-        const reverse = config.ordering === 'descending'
-        const arr = Object.values(entries)
-        const entriesMenu = menusFromEntries(arr)
-        const merged = mergeMenus(entriesMenu as MenuItem[], config.menu)
-        const menus = sortMenus(merged, config.menu, reverse)
+  const arr = Object.values(entries)
+  const entriesMenu = menusFromEntries(arr)
+  const merged = mergeMenus(entriesMenu as MenuItem[], config.menu)
+  const menus = sortMenus(merged, config.menu)
 
-        return children(menus)
-      })}
-    </Fragment>
-  )
+  return <Fragment>{children(menus)}</Fragment>
 }

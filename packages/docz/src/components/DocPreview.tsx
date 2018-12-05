@@ -76,6 +76,9 @@ export interface DocPreviewProps {
 export const DocPreview: SFC<DocPreviewProps> = ({
   components: themeComponents = {},
 }) => {
+  const { entries } = state.use()
+  if (!entries) return null
+
   const components = { ...defaultComponents, ...themeComponents }
   const NotFound: any = components.notFound
   const Loading: any = components.loading
@@ -98,17 +101,12 @@ export const DocPreview: SFC<DocPreviewProps> = ({
 
   return (
     <MDXProvider components={components}>
-      {state.get(({ entries }) => {
-        if (!entries) return null
-        return (
-          <Suspense fallback={<Loading />}>
-            <Switch>
-              {Object.keys(entries).map(renderRoute(entries))}
-              {NotFound && <Route component={NotFound} />}
-            </Switch>
-          </Suspense>
-        )
-      })}
+      <Suspense fallback={<Loading />}>
+        <Switch>
+          {Object.keys(entries).map(renderRoute(entries))}
+          {NotFound && <Route component={NotFound} />}
+        </Switch>
+      </Suspense>
     </MDXProvider>
   )
 }

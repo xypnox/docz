@@ -188,15 +188,12 @@ const BaseAnnotations: React.SFC<Props> = ({ of, annotations, components }) => {
 }
 
 type ProviderProps = Pick<Props, Exclude<keyof Props, 'annotations'>>
-const AnnotationsProvider: React.SFC<ProviderProps> = props => (
-  <>
-    {state.get(({ metadata }) => {
-      const annotations = get('annotations', metadata)
-      return annotations ? (
-        <BaseAnnotations {...props} annotations={annotations} />
-      ) : null
-    })}
-  </>
-)
+const AnnotationsProvider: React.SFC<ProviderProps> = props => {
+  const { metadata } = state.use()
+  const annotations = get('annotations', metadata)
+  return annotations ? (
+    <BaseAnnotations {...props} annotations={annotations} />
+  ) : null
+}
 
 export const Annotations = withMDXComponents(AnnotationsProvider)
