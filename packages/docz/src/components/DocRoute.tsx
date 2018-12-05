@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { SFC } from 'react'
+import { useEffect, SFC } from 'react'
 import { withMDXComponents } from '@mdx-js/tag/dist/mdx-provider'
+import { RouteProps } from 'react-router'
 import imported from 'react-imported-component'
 
 import { Entry } from '../state'
@@ -28,7 +29,7 @@ export const loadRoute: any = (path: string, LoadingComponent: any) =>
     LoadingComponent,
   })
 
-interface DocRouteProps {
+interface DocRouteProps extends RouteProps {
   component: any
   components: ComponentsMap
   entry: Entry
@@ -38,16 +39,17 @@ export const DocRoute: SFC<DocRouteProps> = ({
   entry,
   components,
   component: Component,
-  ...routeProps
+  ...props
 }) => {
   const Page: any = components.page
-  const props = { ...routeProps, doc: entry }
+  const common = { ...props, doc: entry }
+  useEffect(() => window.scrollTo(0, 0), [])
 
   return Page ? (
-    <Page {...props}>
-      <Component {...props} />
+    <Page {...common}>
+      <Component {...common} />
     </Page>
   ) : (
-    <Component {...props} />
+    <Component {...common} />
   )
 }
