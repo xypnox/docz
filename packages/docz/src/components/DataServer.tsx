@@ -1,36 +1,27 @@
-import { ReactNode, Component } from 'react'
+import { Children, SFC, useEffect } from 'react'
 import { state } from '../state'
 
-interface DataServerProps {
+export interface DataServerProps {
   websocketUrl?: string
 }
 
-export class DataServer extends Component<DataServerProps> {
-  private socket: WebSocket | null
+export const DataServer: SFC<DataServerProps> = ({
+  children,
+  websocketUrl,
+}) => {
+  useEffect(() => {
+    if (websocketUrl) {
+      const socket = new WebSocket(websocketUrl)
+      socket.onmessage = (ev: any) => {
+        const { type, payload } = JSON.parse(ev.data)
+        const prop = type.startsWith('state.') && type.split('.')[1]
 
-  constructor(props: DataServerProps, ctx: any) {
-    const { websocketUrl } = props
-
-    super(props, ctx)
-    this.socket = websocketUrl ? new WebSocket(websocketUrl) : null
-  }
-
-  public componentDidMount(): void {
-    if (this.socket) this.setupWebsockets(this.socket)
-  }
-
-  public render(): ReactNode {
-    return this.props.children
-  }
-
-  private setupWebsockets(socket: WebSocket): void {
-    socket.onmessage = (ev: any) => {
-      const { type, payload } = JSON.parse(ev.data)
-      const prop = type.startsWith('state.') && type.split('.')[1]
-
-      if (prop) {
-        state.set(state => ({ ...state, [prop]: payload }))
+        if (prop) {
+          state.set(state => ({ ...state, [prop]: payload }))
+        }
       }
     }
-  }
+  }, [])
+
+  return Children.only(children)
 }

@@ -188,7 +188,6 @@ const BaseAnnotations: React.SFC<Props> = ({ of, annotations, components }) => {
 }
 
 type ProviderProps = Pick<Props, Exclude<keyof Props, 'annotations'>>
-
 const AnnotationsProvider: React.SFC<ProviderProps> = props => (
   <>
     {state.get(({ metadata }) => {
