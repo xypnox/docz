@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { CSSProperties, Fragment, SFC, ComponentType } from 'react'
+import { CSSProperties, SFC, ComponentType } from 'react'
 import { withMDXComponents } from '@mdx-js/tag/dist/mdx-provider'
 import { get } from 'lodash/fp'
 import capitalize from 'capitalize'
@@ -130,7 +130,7 @@ const BasePropsTable: SFC<PropsTable> = ({ of: component, components }) => {
   const Tooltip = components.tooltip
 
   return (
-    <Fragment>
+    <>
       <Table className="PropsTable">
         <Thead style={styles.thead}>
           <Tr>
@@ -178,7 +178,7 @@ const BasePropsTable: SFC<PropsTable> = ({ of: component, components }) => {
             })}
         </Tbody>
       </Table>
-    </Fragment>
+    </>
   )
 }
 

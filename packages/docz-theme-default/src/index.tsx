@@ -22,7 +22,7 @@ const Theme = () => {
         components={{
           page: components.Page,
           notFound: components.NotFound,
-          render: components.Render,
+          playground: components.Playground,
           blockquote: components.Blockquote,
           h1: components.H1,
           h2: components.H2,

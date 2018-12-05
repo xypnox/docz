@@ -1,35 +1,22 @@
 import * as React from 'react'
-import { Suspense, Fragment, SFC, ComponentType as CT } from 'react'
+import { Suspense, SFC, ComponentType as CT } from 'react'
 import { Switch, Route, RouteComponentProps } from 'react-router-dom'
 import { MDXProvider } from '@mdx-js/tag'
 import { get } from 'lodash/fp'
 
-import { DocRoute, loadRoute } from './DocRoute'
 import { state, Entry, EntryMap } from '../state'
+import { DocRoute, loadRoute } from './DocRoute'
+import { PlaygroundProps } from './Playground'
 
 export type PageProps = RouteComponentProps<any> & {
   doc: Entry
 }
 
-export interface RenderComponentProps {
-  className?: string
-  style?: any
-  wrapper?: CT<any>
-  components: ComponentsMap
-  component: JSX.Element
-  position: number
-  code: string
-  codesandbox: string
-  scope: Record<string, any>
-}
-
-export type RenderComponent = CT<RenderComponentProps>
-
 export interface ComponentsMap {
   loading?: CT
   page?: CT<PageProps>
   notFound?: CT<RouteComponentProps<any>>
-  render?: RenderComponent
+  playground?: CT<PlaygroundProps>
   h1?: CT<any> | string
   h2?: CT<any> | string
   h3?: CT<any> | string
@@ -46,27 +33,10 @@ export interface ComponentsMap {
   [key: string]: any
 }
 
-const DefaultLoading: SFC = () => <Fragment>Loading</Fragment>
-
-export const Identity: SFC<any> = ({ children }) => (
-  <Fragment>{children}</Fragment>
-)
-
-export const DefaultRender: RenderComponent = ({ component, code }) => (
-  <Fragment>
-    {component}
-    {code}
-  </Fragment>
-)
-
-export type NotFoundComponent = CT<RouteComponentProps<any>>
-const DefaultNotFound: NotFoundComponent = () => <Fragment>Not found</Fragment>
-
 const defaultComponents: ComponentsMap = {
-  notFound: DefaultNotFound,
-  loading: DefaultLoading,
-  render: DefaultRender,
-  page: Identity,
+  notFound: () => <>Not found</>,
+  loading: () => <>Loading...</>,
+  page: ({ children }) => <>{children}</>,
 }
 
 export interface DocPreviewProps {
@@ -85,7 +55,7 @@ export const DocPreview: SFC<DocPreviewProps> = ({
 
   const renderRoute = (entries: EntryMap) => (path: string) => {
     const entry = get(path, entries)
-    const component: any = loadRoute(path, components.loading)
+    const component: any = loadRoute(path, Loading)
     const props = { entry, components, component }
 
     component.preload()

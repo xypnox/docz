@@ -1,14 +1,33 @@
 import * as React from 'react'
-import { ComponentType, SFC } from 'react'
+import { ComponentType as CT, SFC } from 'react'
 import { withMDXComponents } from '@mdx-js/tag/dist/mdx-provider'
 
 import { ComponentsMap } from './DocPreview'
 
 export interface PlaygroundProps {
+  className?: string
+  style?: any
+  wrapper?: CT<any>
+  components: ComponentsMap
+  component: JSX.Element
+  position: number
+  code: string
+  codesandbox: string
+  scope: Record<string, any>
+}
+
+export const DefaultPlayground: CT<PlaygroundProps> = ({ component, code }) => (
+  <>
+    {component}
+    {code}
+  </>
+)
+
+export interface ImplicitPlaygroundProps {
   components: ComponentsMap
   className?: string
   style?: any
-  wrapper?: ComponentType<any>
+  wrapper?: CT<any>
   children: any
   __scope: Record<string, any>
   __position: number
@@ -16,7 +35,7 @@ export interface PlaygroundProps {
   __codesandbox: string
 }
 
-const BasePlayground: SFC<PlaygroundProps> = ({
+const BasePlayground: SFC<ImplicitPlaygroundProps> = ({
   components,
   className,
   style,
@@ -27,11 +46,10 @@ const BasePlayground: SFC<PlaygroundProps> = ({
   __code,
   __codesandbox,
 }) => {
-  if (!components || !components.render) return null
+  const PlaygroundComp = components.playground || DefaultPlayground
   const props = { className, style, components }
-
   return (
-    <components.render
+    <PlaygroundComp
       {...props}
       component={Wrapper ? <Wrapper>{children}</Wrapper> : children}
       scope={__scope}
