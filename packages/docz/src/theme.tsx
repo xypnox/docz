@@ -5,7 +5,7 @@ import { StaticRouterProps } from 'react-router'
 
 import { state, ThemeConfig, TransformFn } from './state'
 import { ErrorBoundary } from './components/ErrorBoundary'
-import { setupDataServer } from './utils/setupDataServer'
+import { useDataServer } from './hooks/useDataServer'
 
 // tslint:disable-next-line
 import db from '~db'
