@@ -114,7 +114,11 @@ npx babel-upgrade --write
 ```
 ## 📟 &nbsp; Install and Usage
 
+<<<<<<< HEAD
 Simplicity is one of our core principles. Therefore, getting started with **docz** is something really easy and quick. First of all, you will need to install **docz** and some theme on your project using your favorite package manager (we'll asume yarn for this example):
+=======
+Simplicity is one of our core principles. Therefore, getting started with **docz** is something really easy and quick. First of all, you will need to install **docz** and some docz theme that your want on your project by using your favorite package manager (we'll asume yarn for this example):
+>>>>>>> a339d28... chore: remove cycle dependency of docz and docz-theme-default
 
 ```bash
 $ yarn add docz docz-theme-default --dev
