@@ -56,9 +56,9 @@ export interface EditorProps {
   mode?: string
   matchBrackets?: boolean
   indentUnit?: number
-  onChange?: (code: string) => any
   language?: string
   withLastLine?: boolean
+  onChange?: (code: string) => any
 }
 
 export const Editor: SFC<EditorProps> = ({
@@ -87,34 +87,25 @@ export const Editor: SFC<EditorProps> = ({
     setCode(code)
   }
 
-  const language = defaultLanguage || getLanguage(children)
-  const options = {
-    ...props,
-    tabSize: 2,
-    mode: language || mode,
-    lineNumbers: true,
-    lineWrapping: true,
-    autoCloseTags: true,
-    theme: 'docz-light',
-  }
-
-  const editorProps = (config: any) => ({
+  const editorProps = {
     value: code,
     className: editorClassName,
     editorDidMount: removeLastLine,
     onBeforeChange: handleChange,
     options: {
-      ...options,
-      theme:
-        config && config.themeConfig
-          ? config.themeConfig.codemirrorTheme
-          : options.theme,
+      ...props,
+      tabSize: 2,
+      lineNumbers: true,
+      lineWrapping: true,
+      autoCloseTags: true,
+      mode: defaultLanguage || getLanguage(children) || mode,
+      theme: getter(config, 'themeConfig.codemirrorTheme', 'docz-light'),
     },
-  })
+  }
 
   return (
     <Wrapper className={className}>
-      <CodeMirror {...editorProps(config)} />
+      <CodeMirror {...editorProps} />
       <Actions>{actions || <ClipboardAction content={code} />}</Actions>
     </Wrapper>
   )

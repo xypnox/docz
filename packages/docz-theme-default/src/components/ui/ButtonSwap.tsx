@@ -1,8 +1,6 @@
 import * as React from 'react'
 import { jsx } from '@emotion/core'
-import { SFC } from 'react'
-import { Toggle } from 'react-powerplug'
-
+import { useState, SFC } from 'react'
 import { Button as BaseButton } from './Button'
 
 export type AnimatedButtonProps = React.ButtonHTMLAttributes<any> & {
@@ -16,22 +14,21 @@ export const ButtonSwap: SFC<AnimatedButtonProps> = ({
   swap,
   children,
   ...props
-}) => (
-  <Toggle>
-    {({ toggle, on }: any) => {
-      const Btn: any = Button
-      const hasSwap = Boolean(swap)
-      const handleClick = (ev: any) => {
-        hasSwap && toggle()
-        onClick && onClick(ev)
-        hasSwap && setTimeout(toggle, 500)
-      }
+}) => {
+  const Btn: any = Button
+  const hasSwap = Boolean(swap)
+  const [on, setOn] = useState(false)
+  const toggle = () => setOn(s => !s)
 
-      return (
-        <Btn onClick={handleClick} {...props}>
-          {on ? swap : children}
-        </Btn>
-      )
-    }}
-  </Toggle>
-)
+  const handleClick = (ev: any) => {
+    hasSwap && toggle()
+    onClick && onClick(ev)
+    hasSwap && setTimeout(toggle, 500)
+  }
+
+  return (
+    <Btn onClick={handleClick} {...props}>
+      {on ? swap : children}
+    </Btn>
+  )
+}

@@ -2053,13 +2053,6 @@
   dependencies:
     "@types/lodash" "*"
 
-"@types/lodash.flattendepth@^4.7.4":
-  version "4.7.4"
-  resolved "https://registry.npmjs.org/@types/lodash.flattendepth/-/lodash.flattendepth-4.7.4.tgz#93409d3b2f4b725961d26f21c59da0eec29ae4b1"
-  integrity sha512-N1MqP815+9SpSCTazvuawlpRDJRPrOM+PPBvlObOkAc1Ps7tg6oB6KrNY2rhBumHBHJmnRTUcmT5cahNh4twcw==
-  dependencies:
-    "@types/lodash" "*"
-
 "@types/lodash.get@^4.4.4":
   version "4.4.4"
   resolved "https://registry.npmjs.org/@types/lodash.get/-/lodash.get-4.4.4.tgz#34b67841594e4ddc8853341d65e971a38cb4e2f0"
@@ -2071,6 +2064,11 @@
   version "4.14.119"
   resolved "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.119.tgz#be847e5f4bc3e35e46d041c394ead8b603ad8b39"
   integrity sha512-Z3TNyBL8Vd/M9D9Ms2S3LmFq2sSMzahodD6rCS9V2N44HUMINb75jNkSuwAx7eo2ufqTdfOdtGQpNbieUjPQmw==
+
+"@types/match-sorter@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.npmjs.org/@types/match-sorter/-/match-sorter-2.2.0.tgz#f7231ea775ec8401f65153e4f8a37b7b1c06860d"
+  integrity sha512-1dGCs7vmVbC4XIcImF4/ZYSPlDSjV21pi8PuYk8sRAtWepmPNGwPZcJCcM77U27X9B2qo38DvN1IamPaJDI2bg==
 
 "@types/mime@*":
   version "2.0.0"
@@ -8985,11 +8983,6 @@ lodash.flatten@^4.4.0:
   resolved "https://registry.npmjs.org/lodash.flatten/-/lodash.flatten-4.4.0.tgz#f31c22225a9632d2bbf8e4addbef240aa765a61f"
   integrity sha1-8xwiIlqWMtK7+OSt2+8kCqdlph8=
 
-lodash.flattendepth@^4.7.0:
-  version "4.7.0"
-  resolved "https://registry.npmjs.org/lodash.flattendepth/-/lodash.flattendepth-4.7.0.tgz#b4d2d14fc7d9c53deb96642eb616fff22a60932f"
-  integrity sha1-tNLRT8fZxT3rlmQuthb/8ipgky8=
-
 lodash.foreach@^4.5.0:
   version "4.5.0"
   resolved "https://registry.npmjs.org/lodash.foreach/-/lodash.foreach-4.5.0.tgz#1a6a35eace401280c7f06dddec35165ab27e3e53"
@@ -11383,13 +11376,6 @@ react-perfect-scrollbar@^1.4.2:
   dependencies:
     perfect-scrollbar "^1.4.0"
     prop-types "^15.6.1"
-
-react-powerplug@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/react-powerplug/-/react-powerplug-1.0.0.tgz#f9c10a761ece115661b8fd10920c4e573ea95909"
-  integrity sha512-H7U+1sNiOqlaPgZpfciVZ3BMHtXHsd0tkXrOmrwV7ZTpK+YGRddK7+Um1RT2OTe+4G+1muXfyFMAwcnasABMtA==
-  dependencies:
-    "@babel/runtime" "^7.0.0"
 
 react-router-dom@^4.3.1:
   version "4.3.1"

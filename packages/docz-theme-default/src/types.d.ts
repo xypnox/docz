@@ -30,8 +30,6 @@ declare module 'react-feather/dist/icons/smartphone'
 declare module 'react-feather/dist/icons/tablet'
 declare module 'react-lightweight-tooltip'
 declare module 'react-perfect-scrollbar'
-declare module 'react-powerplug'
-declare module 'react-sizes'
 declare module 'webfontloader'
 
 declare module 'facepaint' {

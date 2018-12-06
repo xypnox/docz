@@ -52,7 +52,7 @@ export interface State {
   entries?: EntryMap
   themeConfig?: ThemeConfig
   transform?: TransformFn
-  metadata: Metadata
+  metadata?: Metadata
 }
 
 export const state = create<State>()

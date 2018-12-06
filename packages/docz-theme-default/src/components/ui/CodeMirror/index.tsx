@@ -1,6 +1,6 @@
 import { jsx } from '@emotion/core'
 import { SFC } from 'react'
-import { ThemeConfig } from 'docz'
+import { useConfig } from 'docz'
 import { Controlled as BaseCodeMirror } from 'react-codemirror2'
 import PerfectScrollbar from 'react-perfect-scrollbar'
 import styled from '@emotion/styled'
@@ -70,16 +70,22 @@ const scrollbarOpts = {
   suppressScrollX: true,
 }
 
-export const CodeMirror: SFC<any> = props => (
-  <ThemeConfig>
-    {({ themeConfig }) => (
-      <Scrollbar
-        option={scrollbarOpts}
-        linesToScroll={themeConfig.linesToScrollEditor || 14}
-      >
-        {global}
-        <EditorStyled {...props} />
-      </Scrollbar>
-    )}
-  </ThemeConfig>
-)
+interface CodeMirrorProps {
+  value: string
+  options?: any
+  editorDidMount?: (editor: any) => any
+  onBeforeChange?: (editor: any, data: any, code: string) => any
+}
+
+export const CodeMirror: SFC<CodeMirrorProps> = props => {
+  const { themeConfig } = useConfig()
+  return (
+    <Scrollbar
+      option={scrollbarOpts}
+      linesToScroll={themeConfig.linesToScrollEditor || 14}
+    >
+      {global}
+      <EditorStyled {...props} />
+    </Scrollbar>
+  )
+}

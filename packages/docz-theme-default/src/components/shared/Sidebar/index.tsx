@@ -139,7 +139,7 @@ export const Sidebar: SFC = () => {
 
   const handleSidebarToggle = () => {
     if (isDesktop) return
-    setHidden(!hidden)
+    setHidden(s => !s)
     addOverlayClass(!hidden)
   }
 

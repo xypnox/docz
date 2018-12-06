@@ -1,4 +1,4 @@
-import { useState, useEffect, SFC, Fragment } from 'react'
+import { useCallback, useState, useEffect, SFC, Fragment } from 'react'
 import { PlaygroundProps, useConfig, useLocalStorage } from 'docz'
 import { LiveProvider, LiveError, LivePreview } from 'react-live'
 import { css, jsx } from '@emotion/core'
@@ -179,15 +179,21 @@ export const Playground: SFC<PlaygroundProps> = ({
     setSize(fullscreen)
   }
 
-  const transformCode = (code: string) => {
-    if (code.startsWith('()') || code.startsWith('class')) return code
-    return `<React.Fragment>${code}</React.Fragment>`
-  }
+  const transformCode = useCallback(
+    (code: string) => {
+      if (code.startsWith('()') || code.startsWith('class')) return code
+      return `<React.Fragment>${code}</React.Fragment>`
+    },
+    [code]
+  )
 
-  const codesandboxUrl = (native: boolean): string => {
-    const url = 'https://codesandbox.io/api/v1/sandboxes/define'
-    return `${url}?parameters=${codesandbox}${native ? `&editorsize=75` : ``}`
-  }
+  const codesandboxUrl = useCallback(
+    (native: boolean): string => {
+      const url = 'https://codesandbox.io/api/v1/sandboxes/define'
+      return `${url}?parameters=${codesandbox}${native ? `&editorsize=75` : ``}`
+    },
+    [codesandbox]
+  )
 
   const unloadListener = (): void => storage.remove(position)
 
