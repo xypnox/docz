@@ -1,5 +1,7 @@
-import { pipe, get, omit } from 'lodash/fp'
+import { useMemo } from 'react'
+import { pipe, get, omit, flattenDepth } from 'lodash/fp'
 import { ulid } from 'ulid'
+import match from 'match-sorter'
 import sort from 'array-sort'
 
 import { compare, flatArrFromObject, mergeArrBy } from '../utils/helpers'
@@ -99,13 +101,31 @@ const sortMenus = (first: Menus, second: Menus | undefined = []): Menus => {
   })
 }
 
-export const useMenus = () => {
+const search = (val: string, menu: MenuItem[]) => {
+  const items = menu.map(item => [item].concat(item.menu || []))
+  const flattened = flattenDepth(2, items)
+  return match(flattened, val, { keys: ['name'] })
+}
+
+export interface UseMenusParams {
+  query?: string
+}
+
+export const useMenus = ({ query = '' }: UseMenusParams) => {
   const { entries, config } = state.use()
   if (!entries || !config) return null
 
   const arr = Object.values(entries)
-  const entriesMenu = menusFromEntries(arr)
-  const merged = mergeMenus(entriesMenu as MenuItem[], config.menu)
+  const entriesMenu = useMemo(() => menusFromEntries(arr), [arr])
+  const merged = useMemo(
+    () => mergeMenus(entriesMenu as MenuItem[], config.menu),
+    [entriesMenu, config.menu]
+  )
 
-  return sortMenus(merged, config.menu)
+  const sorted = useMemo(() => sortMenus(merged, config.menu), [
+    merged,
+    config.menu,
+  ])
+
+  return query.length > 0 ? search(query, sorted) : sorted
 }

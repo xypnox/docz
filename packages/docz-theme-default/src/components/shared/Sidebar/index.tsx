@@ -1,11 +1,8 @@
 import { Fragment } from 'react'
 import { jsx } from '@emotion/core'
 import { SFC, useState, useEffect } from 'react'
-import { MenuItem, useMenus } from 'docz'
-import withSizes from 'react-sizes'
+import { useMenus, useWindowSize, usePrevious } from 'docz'
 import styled from '@emotion/styled'
-import matchSorter from 'match-sorter'
-import flattendepth from 'lodash.flattendepth'
 
 import { Logo } from '../Logo'
 import { Search } from '../Search'
@@ -15,7 +12,6 @@ import { Hamburguer } from './Hamburguer'
 
 import { get } from '@utils/theme'
 import { mq, breakpoints } from '@styles/responsive'
-import { usePrevious } from '@utils/usePrevious'
 
 interface WrapperProps {
   opened: boolean
@@ -118,22 +114,12 @@ const ToggleBackground = styled.div<OpenProps>`
   z-index: 99;
 `
 
-const match = (val: string, menu: MenuItem[]) => {
-  const items = menu.map(item => [item].concat(item.menu || []))
-  const flattened = flattendepth(items, 2)
-  return matchSorter(flattened, val, { keys: ['name'] })
-}
-
-interface SidebarProps {
-  isDesktop: boolean
-}
-
-const SidebarBase: SFC<SidebarProps> = ({ isDesktop }) => {
-  const menusInitial = useMenus()
+export const Sidebar: SFC = () => {
   const [hidden, setHidden] = useState(true)
-  const [searching, setSearching] = useState(false)
-  const [menus, setMenus] = useState(menusInitial)
-  const [lastVal, setLastVal] = useState('')
+  const [query, setQuery] = useState('')
+  const menus = useMenus({ query })
+  const windowSize = useWindowSize()
+  const isDesktop = windowSize.outerWidth >= breakpoints.desktop
   const prevIsDesktop = usePrevious(isDesktop)
 
   useEffect(() => {
@@ -142,24 +128,6 @@ const SidebarBase: SFC<SidebarProps> = ({ isDesktop }) => {
       document.documentElement!.classList.remove('with-overlay')
     }
   })
-
-  const search = (initial: MenuItem[], menus: MenuItem[], val: string) => {
-    const change = !val.startsWith(lastVal)
-
-    setLastVal(val)
-    return match(val, change ? initial : menus)
-  }
-
-  const handleSearchDocs = (
-    initial: MenuItem[] | null,
-    menus: MenuItem[] | null
-  ) => (val: string) => {
-    if (!initial || !menus) return
-    const isEmpty = val.length === 0
-
-    setMenus(isEmpty ? initial : search(initial, menus, val))
-    setSearching(!isEmpty)
-  }
 
   const addOverlayClass = (isHidden: boolean) => {
     const method = !isHidden ? 'add' : 'remove'
@@ -181,7 +149,7 @@ const SidebarBase: SFC<SidebarProps> = ({ isDesktop }) => {
         <Content>
           <Hamburguer opened={!hidden} onClick={handleSidebarToggle} />
           <Logo showBg={!hidden} />
-          <Search onSearch={handleSearchDocs(menusInitial, menus)} />
+          <Search onSearch={setQuery} />
 
           {menus && menus.length === 0 ? (
             <Empty>No documents found.</Empty>
@@ -193,7 +161,7 @@ const SidebarBase: SFC<SidebarProps> = ({ isDesktop }) => {
                     key={menu.id}
                     item={menu}
                     sidebarToggle={handleSidebarToggle}
-                    collapseAll={Boolean(searching)}
+                    collapseAll={Boolean(query.length)}
                   />
                 ))}
             </Menus>
@@ -210,9 +178,3 @@ const SidebarBase: SFC<SidebarProps> = ({ isDesktop }) => {
     </Fragment>
   )
 }
-
-const mapSizesToProps = ({ width }: { width: number }) => ({
-  isDesktop: width >= breakpoints.desktop,
-})
-
-export const Sidebar = withSizes(mapSizesToProps)(SidebarBase)

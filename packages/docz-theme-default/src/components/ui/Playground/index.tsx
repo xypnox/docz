@@ -1,5 +1,5 @@
 import { useState, useEffect, SFC, Fragment } from 'react'
-import { PlaygroundProps, useConfig } from 'docz'
+import { PlaygroundProps, useConfig, useLocalStorage } from 'docz'
 import { LiveProvider, LiveError, LivePreview } from 'react-live'
 import { css, jsx } from '@emotion/core'
 import styled from '@emotion/styled'
@@ -13,7 +13,6 @@ import { ResizeBar } from './ResizeBar'
 import { ActionsBar } from './ActionsBar'
 import { Editor as PreBase } from '../Editor'
 
-import { useLocalStorage } from '@utils/useLocalStorage'
 import { get as themeGet } from '@utils/theme'
 import { mq } from '@styles/responsive'
 

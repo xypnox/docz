@@ -1,12 +1,13 @@
-export { theme } from './theme'
+export { DocPreview, PageProps } from './components/DocPreview'
 export { Entry, MenuItem } from './state'
-
 export { Link, LinkProps } from './components/Link'
 export { Playground, PlaygroundProps } from './components/Playground'
-export { DocPreview, PageProps } from './components/DocPreview'
 export { PropsTable } from './components/PropsTable'
-export { Annotations } from './components/Annotations'
+export { theme } from './theme'
 
 export { useConfig } from './hooks/useConfig'
 export { useDocs } from './hooks/useDocs'
+export { useLocalStorage } from './hooks/useLocalStorage'
 export { useMenus } from './hooks/useMenus'
+export { usePrevious } from './hooks/usePrevious'
+export { useWindowSize } from './hooks/useWindowSize'

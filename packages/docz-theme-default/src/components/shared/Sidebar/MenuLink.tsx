@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState, SFC } from 'react'
-import { Link, MenuItem, useConfig } from 'docz'
+import { Link, MenuItem, useConfig, usePrevious } from 'docz'
 import { css, jsx } from '@emotion/core'
 import styled from '@emotion/styled'
 
 import { MenuHeadings } from './MenuHeadings'
 import { get } from '@utils/theme'
-import { usePrevious } from '@utils/usePrevious'
 
 interface WrapperProps {
   active: boolean
