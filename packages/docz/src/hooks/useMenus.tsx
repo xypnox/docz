@@ -127,5 +127,5 @@ export const useMenus = ({ query = '' }: UseMenusParams) => {
     config.menu,
   ])
 
-  return query.length > 0 ? search(query, sorted) : sorted
+  return query.length > 0 ? (search(query, sorted) as MenuItem[]) : sorted
 }

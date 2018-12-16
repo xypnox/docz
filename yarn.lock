@@ -2053,6 +2053,13 @@
   dependencies:
     "@types/lodash" "*"
 
+"@types/lodash.flattendepth@^4.7.4":
+  version "4.7.4"
+  resolved "https://registry.npmjs.org/@types/lodash.flattendepth/-/lodash.flattendepth-4.7.4.tgz#93409d3b2f4b725961d26f21c59da0eec29ae4b1"
+  integrity sha512-N1MqP815+9SpSCTazvuawlpRDJRPrOM+PPBvlObOkAc1Ps7tg6oB6KrNY2rhBumHBHJmnRTUcmT5cahNh4twcw==
+  dependencies:
+    "@types/lodash" "*"
+
 "@types/lodash.get@^4.4.4":
   version "4.4.4"
   resolved "https://registry.npmjs.org/@types/lodash.get/-/lodash.get-4.4.4.tgz#34b67841594e4ddc8853341d65e971a38cb4e2f0"
@@ -13655,7 +13662,7 @@ typedarray@^0.0.6:
   resolved "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@3.2.2, typescript@^3.2.2:
+typescript@3.2.2, typescript@^3.2.1, typescript@^3.2.2:
   version "3.2.2"
   resolved "https://registry.npmjs.org/typescript/-/typescript-3.2.2.tgz#fe8101c46aa123f8353523ebdcf5730c2ae493e5"
   integrity sha512-VCj5UiSyHBjwfYacmDuc/NOk4QQixbE+Wn7MFJuS0nRuPQbof132Pw4u53dm264O8LPc2MVsc7RJNml5szurkg==
