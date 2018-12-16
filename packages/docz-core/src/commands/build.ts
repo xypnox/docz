@@ -28,7 +28,6 @@ export const build = async (args: Config) => {
 
     await promiseLogger(run('onPreBuild', config), 'Running onPreBuild()')
     await bundler.build(bundlerConfig)
-
     await promiseLogger(run('onPostBuild', config), 'Running onPostBuild()')
     await dataServer.close()
   } catch (err) {
