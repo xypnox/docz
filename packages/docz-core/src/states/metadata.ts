@@ -2,7 +2,7 @@ import * as path from 'path'
 import chokidar from 'chokidar'
 import equal from 'fast-deep-equal'
 import { State, Params } from '../DataServer'
-import get from 'lodash.get'
+import { get } from 'lodash/fp'
 
 import * as paths from '../config/paths'
 import { Entries } from '../Entries'
@@ -15,7 +15,7 @@ const initial = (entries: Entries, config: Config) => async (p: Params) => {
 }
 
 const update = (config: Config) => (p: Params) => async (filepath: string) => {
-  const old = get(p, 'state.metadata.annotations')
+  const old = get('state.metadata.annotations', p)
   const fullpath = path.join(paths.root, config.src, filepath)
   const newMeta = { ...old, [fullpath]: jsdocParse(fullpath) }
 

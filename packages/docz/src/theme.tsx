@@ -36,28 +36,21 @@ export function theme(
 ): ThemeReturn {
   return WrappedComponent => {
     const Theme: SFC<ThemeProps> = props => {
-      setupDataServer(DOCZ_WEBSOCKET_URL)
-
       const { wrapper: Wrapper } = props
-      const Router = (props: any) =>
-        Boolean(DOCZ_HASH_ROUTER) ? (
-          <HashRouter {...props} />
-        ) : (
-          <BrowserRouter {...props} />
-        )
-
-      const wrapped = Wrapper ? (
-        <Wrapper>
-          <WrappedComponent />
-        </Wrapper>
-      ) : (
-        <WrappedComponent />
-      )
+      useDataServer(DOCZ_WEBSOCKET_URL)
 
       return (
         <ErrorBoundary>
           <state.Provider initial={{ ...db, themeConfig, transform }}>
-            <Router basename={DOCZ_BASE_URL}>{wrapped}</Router>
+            <Router basename={DOCZ_BASE_URL}>
+              {Wrapper ? (
+                <Wrapper>
+                  <WrappedComponent />
+                </Wrapper>
+              ) : (
+                <WrappedComponent />
+              )}
+            </Router>
           </state.Provider>
         </ErrorBoundary>
       )

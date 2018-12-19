@@ -51,11 +51,11 @@ export const getBabelConfig = async (
       cacheIdentifier: getCacheIdentifier(
         isProd ? 'production' : isDev && 'development',
         [
-          'docz',
-          'docz-theme-default',
-          'docz-utils',
-          'docz-core',
-          'babel-preset-docz',
+          // 'docz',
+          // 'docz-theme-default',
+          // 'docz-utils',
+          // 'docz-core',
+          // 'babel-preset-docz',
         ]
       ),
     }),

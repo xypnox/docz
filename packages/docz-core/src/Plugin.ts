@@ -1,6 +1,6 @@
 import pReduce from 'p-reduce'
 import WebpackChainConfig from 'webpack-chain'
-import get from 'lodash/get'
+import { get } from 'lodash/fp'
 
 import { Config } from './commands/args'
 import { isFn } from './utils/helpers'
@@ -53,7 +53,7 @@ export class Plugin<C = any> implements PluginFactory {
     return (method, ...args) => {
       if (plugins && plugins.length > 0) {
         for (const plugin of plugins) {
-          const fn = get<Plugin, any>(plugin, method)
+          const fn = get<Plugin, any>(method, plugin)
           isFn(fn) && fn(...args)
         }
       }
@@ -65,7 +65,7 @@ export class Plugin<C = any> implements PluginFactory {
   ): (prop: keyof Plugin) => any[] {
     return prop =>
       plugins && plugins.length > 0
-        ? plugins.map(p => get(p, prop)).filter(Boolean)
+        ? plugins.map(p => get(prop, p)).filter(Boolean)
         : []
   }
 
@@ -74,7 +74,7 @@ export class Plugin<C = any> implements PluginFactory {
   ): (method: keyof Plugin, initial: C, ...args: any[]) => C {
     return (method, initial, ...args) => {
       return [...(plugins || [])].reduce((obj: any, plugin) => {
-        const fn = get<Plugin, any>(plugin, method)
+        const fn = get<Plugin, any>(method, plugin)
         return fn && isFn(fn) ? fn(obj, ...args) : obj
       }, initial)
     }
@@ -87,7 +87,7 @@ export class Plugin<C = any> implements PluginFactory {
       return pReduce(
         [...(plugins || [])],
         (obj: any, plugin: any) => {
-          const fn = get(plugin, method)
+          const fn = get(method, plugin)
           return Promise.resolve(fn && isFn(fn) ? fn(obj, ...args) : obj)
         },
         initial

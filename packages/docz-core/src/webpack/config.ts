@@ -1,10 +1,7 @@
 import * as path from 'path'
 import { Configuration } from 'webpack'
 import Config from 'webpack-chain'
-<<<<<<< HEAD
 import envDotProp from 'env-dot-prop'
-=======
->>>>>>> fix(docz-core): use webpack-dev-server instead of webpack-serve
 
 import * as loaders from './loaders'
 import * as plugins from './plugins'
@@ -12,10 +9,7 @@ import * as paths from '../config/paths'
 import { Config as Args, Env } from '../commands/args'
 import { BabelRC } from '../utils/babel-config'
 import { minifier } from './minifier'
-<<<<<<< HEAD
 import { ServerHooks } from '../Bundler'
-=======
->>>>>>> fix(docz-core): use webpack-dev-server instead of webpack-serve
 
 export const createConfig = (args: Args, env: Env) => async (
   babelrc: BabelRC,
@@ -176,11 +170,10 @@ export const createConfig = (args: Args, env: Env) => async (
       },
     })
 
-  config.when(isProd, cfg => minifier(cfg))
-  config.performance.hints(false)
   config.when(isProd, cfg => minifier(cfg, args))
   hooks.onCreateWebpackChain<Config>(config, !isProd, args)
   args.onCreateWebpackChain<Config>(config, !isProd, args)
 
+  config.performance.hints(false)
   return config.toConfig() as Configuration
 }

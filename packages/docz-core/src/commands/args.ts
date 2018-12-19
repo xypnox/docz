@@ -2,7 +2,7 @@ import * as fs from 'fs-extra'
 import envDotProp from 'env-dot-prop'
 import humanize from 'humanize-string'
 import titleize from 'titleize'
-import get from 'lodash/get'
+import { get } from 'lodash/fp'
 
 import { Plugin } from '../Plugin'
 import { BabelRC } from '../utils/babel-config'
@@ -14,12 +14,12 @@ const getEnv = (val: string | string[], defaultValue: any = null): any =>
 
 const removeScope = (name: string) => name.replace(/^@.*\//, '')
 const getInitialTitle = (pkg: any): string => {
-  const name = get(pkg, 'name') || 'MyDoc'
+  const name = get('name', pkg) || 'MyDoc'
   return titleize(humanize(removeScope(name)))
 }
 
 const getInitialDescription = (pkg: any): string =>
-  get(pkg, 'description') || 'My awesome app using docz'
+  get('description', pkg) || 'My awesome app using docz'
 
 export type Env = 'production' | 'development'
 export type ThemeConfig = Record<string, any>
