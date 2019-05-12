@@ -1,5 +1,4 @@
 const path = require('path')
-const { getDoczConfig } = require('../utils/parseConfig')
 const { get } = require('lodash/fp')
 
 const ENTRIES_QUERY = `
@@ -25,8 +24,6 @@ const ENTRIES_QUERY = `
 `
 
 module.exports = ({ graphql, actions }, opts) => {
-  const { paths } = getDoczConfig(opts)
-
   return graphql(ENTRIES_QUERY).then(({ data, errors }) => {
     const hasErrors = errors && errors.length > 0
     const entries = get('allDoczEntries.edges', data)
@@ -34,7 +31,7 @@ module.exports = ({ graphql, actions }, opts) => {
 
     entries.forEach(({ node: entry }) => {
       if (!entry) return
-      const component = path.join(paths.root, entry.filepath)
+      const component = path.join(opts.root, entry.filepath)
       actions.createPage({
         component,
         path: entry.route,

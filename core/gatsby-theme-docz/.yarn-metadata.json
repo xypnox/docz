@@ -1,0 +1,77 @@
+{
+  "manifest": {
+    "name": "gatsby-theme-docz",
+    "version": "1.2.0",
+    "description": "Gatsby theme created to use Docz",
+    "license": "MIT",
+    "author": {
+      "name": "Pedro Nauck",
+      "url": "pedronauck@gmail.com"
+    },
+    "main": "n/a",
+    "keywords": [
+      "gatsby",
+      "gatsby-theme",
+      "docz"
+    ],
+    "scripts": {
+      "fix": "yarn lint --fix",
+      "lint": "eslint . --ext .js",
+      "precommit": "lint-staged"
+    },
+    "dependencies": {
+      "@mdx-js/mdx": "^1.0.18",
+      "@mdx-js/react": "^1.0.16",
+      "babel-plugin-export-metadata": "^1.2.0",
+      "change-case": "^3.1.0",
+      "chokidar": "^3.0.0",
+      "docz": "^1.2.0",
+      "docz-core": "^1.2.0",
+      "docz-theme-default": "^1.2.0",
+      "docz-utils": "^1.2.0",
+      "fs-extra": "^7.0.1",
+      "gatsby": "^2.4.2",
+      "gatsby-mdx": "^0.6.3",
+      "gatsby-plugin-compile-es6-packages": "^1.1.0",
+      "gatsby-plugin-manifest": "^2.1.1",
+      "gatsby-plugin-react-helmet": "^3.0.12",
+      "gatsby-plugin-root-import": "^2.0.5",
+      "gatsby-plugin-styled-components": "^3.0.7",
+      "lodash": "^4.17.11",
+      "prop-types": "^15.7.2",
+      "react": "^16.8.6",
+      "react-dom": "^16.8.6",
+      "react-helmet": "^5.2.1",
+      "rehype-docz": "^1.2.0",
+      "rehype-slug": "^2.0.2",
+      "remark-docz": "^1.2.0",
+      "remark-frontmatter": "^1.3.1",
+      "styled-components": "^4.2.0",
+      "yargs": "^13.2.2"
+    },
+    "devDependencies": {
+      "babel-eslint": "10.0.1",
+      "eslint": "^5.16.0",
+      "eslint-config-react-app": "^4.0.1",
+      "eslint-plugin-flowtype": "3.8.1",
+      "eslint-plugin-import": "2.17.2",
+      "eslint-plugin-jsx-a11y": "6.2.1",
+      "eslint-plugin-react": "7.13.0",
+      "eslint-plugin-react-hooks": "^1.6.0"
+    },
+    "_registry": "npm",
+    "_loc": "/Users/pedronauck/Library/Caches/Yarn/v4/npm-gatsby-theme-docz-1.2.0-514fbce2-678e-4fd6-a69a-1016948460f1-1557694158616/node_modules/gatsby-theme-docz/package.json",
+    "readmeFilename": "README.md",
+    "readme": "# gatsby-theme-docz\n\n> :warning: This is experimental and subject to breaking changes.\n\n## Installation\n\n```sh\nyarn add gatsby gatsby-theme-docz\n```\n\n## Usage\n\n```js\n// gatsby-config.js\nmodule.exports = {\n  __experimentalThemes: [\n    {\n      resolve: 'gatsby-theme-docz',\n    },\n  ],\n}\n```\n\n### Configuration\n\nYou can usually set your config using `doczrc.js` file ([see all available](https://github.com/pedronauck/docz/blob/master/core/docz-core/src/config/argv.ts#L54-L103)) or if you want to\nset some default options for your theme, you can set `options` on plugin definition.\n",
+    "licenseText": "MIT License\n\nCopyright (c) 2018 Pedro Nauck\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+  },
+  "artifacts": [],
+  "remote": {
+    "type": "copy",
+    "registry": "npm",
+    "hash": "902a0c2d-60ac-4866-b4a8-5ccc95d39954-1557694241708",
+    "reference": "/Volumes/Projects/dev/docz/docz/examples/basic/.docz/node_modules/gatsby-theme-docz"
+  },
+  "registry": "npm",
+  "hash": "902a0c2d-60ac-4866-b4a8-5ccc95d39954-1557694241708"
+}

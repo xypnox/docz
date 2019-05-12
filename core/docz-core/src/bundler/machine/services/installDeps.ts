@@ -1,7 +1,7 @@
 import { pipe } from 'lodash/fp'
 import log from 'signale'
 import chalk from 'chalk'
-import shell from 'shelljs'
+import sh from 'shelljs'
 import ora from 'ora'
 
 import * as paths from '../../../config/paths'
@@ -19,18 +19,22 @@ export const installDeps = async ({ firstInstall }: ServerMachineCtx) => {
     warn('This just happen in the first time you run docz.')
     warn('This could take a while!')
     warn('----------------\n')
+    log.await('Installing dependencies\n')
   }
 
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const checking = !firstInstall && ora('Checking dependencies...').start()
-    firstInstall && log.await('Installing dependencies\n')
-
-    shell.cd(paths.docz)
-    shell.exec('yarn install', { silent: !firstInstall }, code => {
-      if (firstInstall) log.success('\nDependencies installed successfully!\n')
+    const afterInstall = async (code: any, stdout: string, stderr: string) => {
+      if (firstInstall) log.success('Dependencies installed successfully!\n')
       if (checking) checking.succeed('Dependencies checked!')
-      if (code !== 0) return reject()
+      if (code !== 0) {
+        log.fatal(stdout)
+        return reject(stderr)
+      }
       return resolve()
-    })
+    }
+
+    sh.cd(paths.docz)
+    sh.exec('yarn install', { silent: !firstInstall }, afterInstall)
   })
 }

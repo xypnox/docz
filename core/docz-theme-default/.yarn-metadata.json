@@ -1,0 +1,71 @@
+{
+  "manifest": {
+    "name": "docz-theme-default",
+    "version": "1.2.0",
+    "description": "The default theme of docz",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "module": "dist/index.esm.js",
+    "types": "dist/index.d.ts",
+    "files": [
+      "dist/",
+      "package.json",
+      "README.md"
+    ],
+    "scripts": {
+      "dev": "cross-env NODE_ENV=development yarn build -w",
+      "build": "cross-env NODE_ENV=production rollup -c",
+      "fix": "yarn lint --fix",
+      "lint": "eslint . --ext .ts,.tsx",
+      "precommit": "lint-staged"
+    },
+    "dependencies": {
+      "@loadable/component": "^5.9.0",
+      "@reach/router": "^1.2.1",
+      "@tippy.js/react": "^2.2.0",
+      "codemirror": "^5.46.0",
+      "copy-text-to-clipboard": "^2.1.0",
+      "docz": "^1.2.0",
+      "facepaint": "^1.2.1",
+      "hotkeys-js": "^3.6.6",
+      "lodash": "^4.17.11",
+      "polished": "^3.3.0",
+      "prop-types": "15.7.2",
+      "re-resizable": "^4.11.0",
+      "react": "^16.8.6",
+      "react-codemirror2": "^6.0.0",
+      "react-dom": "^16.8.6",
+      "react-feather": "^1.1.6",
+      "react-live": "2.0.1",
+      "react-perfect-scrollbar": "^1.5.0",
+      "styled-components": "^4.2.0",
+      "typescript": "3.3.4000"
+    },
+    "peerDependencies": {
+      "react": "^16.8.0",
+      "react-dom": "^16.8.0"
+    },
+    "devDependencies": {
+      "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+      "@types/lodash": "^4.14.124",
+      "@types/styled-components": "^4.1.14",
+      "babel-plugin-module-resolver": "^3.2.0",
+      "babel-plugin-styled-components": "^1.10.0",
+      "docz-rollup": "^1.2.0"
+    },
+    "_registry": "npm",
+    "_loc": "/Users/pedronauck/Library/Caches/Yarn/v4/npm-docz-theme-default-1.2.0-dc1db023-51e3-44cd-bd29-cad1b612e44d-1557694149002/node_modules/docz-theme-default/package.json",
+    "readmeFilename": "README.md",
+    "readme": "# docz-theme-default\n\nDefault theme for [docz](https://docz.site)\n\n![](https://cdn-std.dprcdn.net/files/acc_649651/xZt5zr)\n\n## Dark Mode\n\nTo change your project to use a darker version of default theme, just set your `doczrc.js` like that:\n\n```js\n// doczrc.js\nexport default {\n  themeConfig: {\n    mode: 'dark',\n  },\n}\n```\n\n## Changing your logo\n\nUse your own logo by changing the `logo` property:\n\n```js\n// doczrc.js\nexport default {\n  themeConfig: {\n    logo: {\n      src: '/path/of/my/logo',\n      width: 150,\n    },\n  },\n}\n```\n\n## Changing playground theme\n\nIf you want to customize `<Playground>` theme, you just need to import the css of your [codemirror theme](https://codemirror.net/theme/) and change the `codemirrorTheme` to use your theme. One of ways to import a new css without pain, is add new link on `htmlContext`:\n\n```js\n// doczrc.js\nexport default {\n  htmlContext: {\n    head: {\n      links: [\n        {\n          rel: 'stylesheet',\n          href: 'https://codemirror.net/theme/dracula.css',\n        },\n      ],\n    },\n  },\n  themeConfig: {\n    codemirrorTheme: 'dracula',\n  },\n}\n```\n\n## Default `themeConfig`\n\nAs explained on [Customizing](https://www.docz.site/introduction/customizing) section of docz website, you can customize the theme that you're using by changing `themeConfig` property on your `doczrc.js`. So, each theme has your own specific configuration and for this theme, is that the default config and what you can change:\n\n```js\nconst config = {\n  /**\n   * Mode\n   */\n  mode: 'light', // you can use: 'dark' or 'light'\n  /**\n   * Show/hide Playground editor by default\n   */\n  showPlaygroundEditor: true,\n  /**\n   * Set the numbers of max lines before scroll editor\n   */\n  linesToScrollEditor: 14\n  /**\n   * Customize codemirror theme\n   */\n  codemirrorTheme: 'docz-light',\n  /**\n   * Logo\n   */\n  logo: {\n    src: null,\n    width: null,\n  },\n  /**\n   * Radius\n   */\n  radii: '4px',\n  /**\n   * Colors (depends on select mode)\n   */\n  colors: {\n    white: '#FFFFFF',\n    grayExtraLight: '#EEF1F5',\n    grayLight: '#CED4DE',\n    gray: '#7D899C',\n    grayDark: '#2D3747',\n    grayExtraDark: '#1D2330',\n    dark: '#13161F',\n    blue: '#0B5FFF',\n    skyBlue: '#1FB6FF',\n    /** properties bellow depends on mode select */\n    primary: colors.blue,\n    text: colors.grayDark,\n    link: colors.blue,\n    footerText: colors.grayDark,\n    sidebarBg: colors.grayExtraLight,\n    sidebarText: colors.dark,\n    sidebarHighlight: null,\n    sidebarBorder: colors.grayLight,\n    background: colors.white,\n    border: colors.grayLight,\n    theadColor: colors.gray,\n    theadBg: colors.grayExtraLight,\n    tableColor: colors.dark,\n    codeBg: lighten(0.02, colors.grayExtraLight),\n    codeColor: colors.gray,\n    preBg: colors.grayExtraLight,\n    blockquoteBg: colors.grayExtraLight,\n    blockquoteBorder: colors.grayLight,\n    blockquoteColor: colors.gray,\n  },\n  /**\n   * Styles\n   */\n  styles: {\n    body: css`\n      font-family: ${get('fonts.ui')};\n      font-size: 16px;\n      line-height: 1.6;\n    `,\n    h1: css`\n      margin: 40px 0 20px;\n      font-family: ${get('fonts.display')};\n      font-size: 48px;\n      font-weight: 500;\n      letter-spacing: -0.02em;\n    `,\n    h2: css`\n      margin: 30px 0 20px;\n      line-height: 1.4em;\n      font-family: ${get('fonts.display')};\n      font-weight: 500;\n      font-size: 28px;\n      letter-spacing: -0.02em;\n    `,\n    h3: css`\n      margin: 25px 0 10px;\n      font-size: 20px;\n      font-weight: 400;\n    `,\n    h4: css`\n      margin: 25px 0 10px;\n      font-size: 16px;\n      font-weight: 400;\n    `,\n    h5: css`\n      margin: 20px 0 10px;\n      font-size: 16px;\n      font-weight: 400;\n    `,\n    h6: css`\n      margin: 20px 0 10px;\n      font-size: 16px;\n      font-weight: 400;\n      text-transform: uppercase;\n    `,\n    ol: css`\n      padding: 0;\n      margin: 10px 0 10px;\n    `,\n    ul: css`\n      padding: 0;\n      margin: 10px 0 10px;\n    `,\n    playground: css`\n      padding: 40px;\n    `,\n    code: css`\n      margin: 0 3px;\n      border-radius: 3px;\n      font-family: ${get('fonts.mono')};\n      padding: 2px 5px;\n      font-size: 0.8em;\n      border: '1px solid rgba(0, 0, 0, 0.02)';\n    `,\n    pre: css`\n      font-family: ${get('fonts.mono')};\n      font-size: 14px;\n      line-height: 1.8;\n    `,\n    paragraph: css`\n      margin: 10px 0 20px 0;\n    `,\n    table: css`\n      overflow-y: hidden;\n      width: 100%;\n      font-family: ${get('fonts.mono')};\n      font-size: 14px;\n      overflow-x: initial;\n      display: block;\n    `,\n    blockquote: css`\n      margin: 25px 0;\n      padding: 20px;\n      font-style: italic;\n      font-size: 16px;\n    `,\n  }\n}\n```\n",
+    "licenseText": "MIT License\n\nCopyright (c) 2018 Pedro Nauck\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n"
+  },
+  "artifacts": [],
+  "remote": {
+    "type": "copy",
+    "registry": "npm",
+    "hash": "b9b5d903-2731-453d-9b79-3816b958f5a1-1557694231640",
+    "reference": "/Volumes/Projects/dev/docz/docz/examples/basic/.docz/node_modules/docz-theme-default"
+  },
+  "registry": "npm",
+  "hash": "b9b5d903-2731-453d-9b79-3816b958f5a1-1557694231640"
+}
